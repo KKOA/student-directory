@@ -1,3 +1,4 @@
+#Outputted the list students
 puts "The students of Villians Academy"
 puts "-------------"
 puts "Dr. Hannibal Lector"
@@ -11,3 +12,7 @@ puts "Freddy Krueger"
 puts "The Joker"
 puts "Joffrey Baratheon"
 puts "Norman Bates"
+# Unlike puts, print does not add new character so have use escape character (\n) 
+print "Overall, we have "
+print "11"
+puts " great students"
