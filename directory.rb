@@ -17,17 +17,11 @@ students =
 #Outputted the list students from array
 puts "The students of Villians Academy"
 puts "-------------"
-puts students[0]
-puts students[1]
-puts students[2]
-puts students[3]
-puts students[4]
-puts students[5]
-puts students[6]
-puts students[7]
-puts students[8]
-puts students[9]
-puts students[10]
+# Using the each method to iterate over the students array, storing the current element in temporary variable called student which we can output each student
+
+students.each do | student|
+  puts student
+end
 
 # Unlike puts, print does not add new character so have use escape character (\n)
 # Using array.count method to count the number of students rather than hard coding the value
