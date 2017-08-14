@@ -1,3 +1,4 @@
+student_count = 11
 #Outputted the list students
 puts "The students of Villians Academy"
 puts "-------------"
@@ -12,7 +13,5 @@ puts "Freddy Krueger"
 puts "The Joker"
 puts "Joffrey Baratheon"
 puts "Norman Bates"
-# Unlike puts, print does not add new character so have use escape character (\n) 
-print "Overall, we have "
-print "11"
-puts " great students"
+# Unlike puts, print does not add new character so have use escape character (\n)
+puts "Overall, we have #{student_count} great students"
