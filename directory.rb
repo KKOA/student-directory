@@ -14,15 +14,26 @@ students =
   "Norman Bates"
 ]
 
-#Outputted the list students from array
-puts "The students of Villians Academy"
-puts "-------------"
-# Using the each method to iterate over the students array, storing the current element in temporary variable called student which we can output each student
-
-students.each do | student|
-  puts student
+#Define methods
+def print_header #output the header
+  puts "The students of Villians Academy"
+  puts "-------------"
 end
 
-# Unlike puts, print does not add new character so have use escape character (\n)
-# Using array.count method to count the number of students rather than hard coding the value
-puts "Overall, we have #{students.count} great students"
+def print(names) #This method overwrite existing print method
+  # Takes an array of students.
+  #Outputs each student by using each block parameter (|name|) to iterate over the student array
+
+  names.each do | name|
+    puts name
+  end
+end
+
+def print_footer(names) # Takes array of students and return number students using count method in a message
+  puts "Overall, we have #{names.count} great students"
+end
+
+#call methods
+print_header()
+print(students)
+print_footer(students)
