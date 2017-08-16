@@ -1,20 +1,17 @@
-#Added array to hold students
-students =
-[
-  {:name =>"Dr. Hannibal Lector", :cohort => :november},
-  {:name =>"Darth Vader", :cohort => :november},
-  {:name =>"Nurse Ratched", :cohort => :november},
-  {:name =>"Michael Corleone", :cohort => :november},
-  {:name =>"Alex DeLarge", :cohort => :november},
-  {:name =>"The Wicked Witch of the West", :cohort => :november},
-  {:name =>"Terminator", :cohort => :november},
-  {:name =>"Freddy Krueger", :cohort => :november},
-  {:name =>"The Joker", :cohort => :november},
-  {:name =>"Joffrey Baratheon", :cohort => :november},
-  {:name =>"Norman Bates", :cohort => :november}
-]
-
 #Define methods
+def input_students #method allows the user dynamically input students
+  students = [] #empty array
+  puts "Please enter the names of the students. Hit enter twice to exit"
+  name = gets.chomp #Get user input
+  until name.empty? do #repeat code while name is not empty
+    students << {:name => name, :cohort => :november} #add ended of array
+    puts "Now we have #{students.count} students"
+    puts "Please enter another names of the students. Hit enter twice to exit"
+    name = gets.chomp #ask user for another, also need to prevent infinite loop
+  end
+  return students # return array
+end
+
 def print_header #output the header
   puts "The students of Villians Academy"
   puts "-------------"
@@ -23,7 +20,6 @@ end
 def print(names) #This method overwrite existing print method
   # Takes an array of students.
   #Outputs each student by using each block parameter (|name|) to iterate over the student array
-
   names.each do | name|
     puts "#{name[:name]} (#{name[:cohort]} cohort)"
   end
@@ -35,5 +31,7 @@ end
 
 #call methods
 print_header()
+#Added array to hold students
+students = input_students
 print(students)
 print_footer(students)
