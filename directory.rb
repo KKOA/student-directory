@@ -20,8 +20,8 @@ end
 def print(names) #This method overwrite existing print method
   # Takes an array of students.
   #Outputs each student by using each block parameter (|name|) to iterate over the student array
-  names.each do | name|
-    puts "#{name[:name]} (#{name[:cohort]} cohort)"
+  names.each_with_index do | name,pos|
+    puts "#{pos+1}. #{name[:name]} (#{name[:cohort]} cohort)"
   end
 end
 
