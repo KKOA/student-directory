@@ -11,7 +11,9 @@ def input_students #method allows the user dynamically input students
     puts "Please enter your height in cm"
     height =gets.chomp.to_i
     students << {:name => name, :cohort => :november, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
-    puts "Now we have #{students.count} students",""
+    msg = "Now we have #{students.count} student"
+    msg << "s" if students.count > 1
+    puts msg,""
     puts "Please enter another names of the students. Hit enter twice to exit"
     name = gets.chomp #ask user for another, also need to prevent infinite loop
   end
@@ -19,8 +21,9 @@ def input_students #method allows the user dynamically input students
 end
 
 def print_header #output the header
-  puts "The students of Villians Academy"
-  puts "-------------"
+  puts ""
+  puts "The students of Villians Academy".center(70)
+  puts ("-"*68).center(70)
 end
 
 def print(names) #This method overwrite existing print method
@@ -33,7 +36,7 @@ def print(names) #This method overwrite existing print method
            "(#{names[current_pos][:cohort]} cohort) "+
            "hobbies: #{names[current_pos][:hobbies]} "+
            "country of birth: #{names[current_pos][:country_of_birth]} "+
-           "height: #{names[current_pos][:height]} "
+           "height: #{names[current_pos][:height]} cm "
            )
     end
     current_pos += 1
@@ -41,7 +44,9 @@ def print(names) #This method overwrite existing print method
 end
 
 def print_footer(names) # Takes array of students and return number students using count method in a message
+  puts ""
   puts "Overall, we have #{names.count} great students"
+  puts ""
 end
 
 #call methods
