@@ -4,8 +4,14 @@ def input_students #method allows the user dynamically input students
   puts "Please enter the names of the students. Hit enter twice to exit"
   name = gets.chomp #Get user input
   until name.empty? do #repeat code while name is not empty
-    students << {:name => name, :cohort => :november} #add ended of array
-    puts "Now we have #{students.count} students"
+    puts "Please enter your hobbies"
+    hobbies =gets.chomp
+    puts "Please enter Country of Birth"
+    country_of_birth = gets.chomp
+    puts "Please enter your height in cm"
+    height =gets.chomp.to_i
+    students << {:name => name, :cohort => :november, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
+    puts "Now we have #{students.count} students",""
     puts "Please enter another names of the students. Hit enter twice to exit"
     name = gets.chomp #ask user for another, also need to prevent infinite loop
   end
@@ -22,7 +28,13 @@ def print(names) #This method overwrite existing print method
   namesLength = names.length
   while current_pos < namesLength #loop while current pos less length of names array
     if(names[current_pos][:name].length < 12 && names[current_pos][:name][0].downcase == "a") #output if :name is less than 12 characters and begins with specific character
-      puts "#{current_pos+1}. #{names[current_pos][:name]} (#{names[current_pos][:cohort]} cohort)"
+      puts("#{current_pos+1}. "+
+           "#{names[current_pos][:name]} "+
+           "(#{names[current_pos][:cohort]} cohort) "+
+           "hobbies: #{names[current_pos][:hobbies]} "+
+           "country of birth: #{names[current_pos][:country_of_birth]} "+
+           "height: #{names[current_pos][:height]} "
+           )
     end
     current_pos += 1
   end
