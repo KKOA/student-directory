@@ -62,18 +62,21 @@ def print_footer(names) # Takes array of students and return number students usi
   puts("\nOverall, we have #{names.count} great students\n\n")
 end
 
+def print_menu
+  puts("")
+  puts("Menu".center(70))
+  puts(("-"*68).center(70))
+  menu =['Input the students','Show students','','','','','','','Exit']
+  menu.each_with_index do | menu_item, key |
+    next if menu_item == '' # Do not display empty menu items
+    puts("#{key+1}. #{menu_item}")
+  end
+end
+
 def interactive_menu
   students = [] #Define students array so menu option 2 can be called before menu option 1
   loop do
-    #1 print the menu
-    puts("")
-    puts("Menu".center(70))
-    puts(("-"*68).center(70))
-    menu =['Input the students','Show students','','','','','','','Exit']
-    menu.each_with_index do | menu_item, key |
-      next if menu_item == '' # Do not display empty menu items
-      puts("#{key+1}. #{menu_item}")
-    end
+    print_menu #1 print the menu
 
     #2 read the input and save it into variable
     puts("","Please select an option ")
@@ -82,9 +85,11 @@ def interactive_menu
     #3 perform action
     case selection
     when "1"
+      puts("")
       students = input_students
-      msg = "#{students.count} student added"
-      msg << "s" if students.count < 2
+      msg = "#{students.count} student"
+      msg << "s" if students.count > 1
+      msg << " added"
       puts(msg)
     when "2"
       print_header
