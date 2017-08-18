@@ -1,6 +1,5 @@
 #Define methods
 def input_students #method allows the user dynamically input students
-  students = [] #empty array
   all_cohorts =['januay','february','march','april','may','june','july','august','september','october','nov','december']
   puts("Please enter a student name. Hit enter twice to exit")
   name = gets.strip #Get user input and remove leading and trailing whitespaces
@@ -24,40 +23,39 @@ def input_students #method allows the user dynamically input students
     country_of_birth = gets.strip
     puts("Please enter your height in cm")
     height =gets.strip.to_i
-    students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
-    msg = "Now we have #{students.count} student"
-    msg << "s" if students.count > 1
+    @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
+    msg = "Now we have #{@students.count} student"
+    msg << "s" if(@students.count > 1)
     puts(msg,"")
     puts("Please enter another student name. Hit enter twice to exit")
     name = gets.strip #ask user for another, also need to prevent infinite loop
   end
-  return students # return array
 end
 
 def print_header #output the header
   puts("", "The students of Villians Academy".center(70),("-"*68).center(70))
 end
 
-def print_student_lists(names) #This method overwrite existing print method
+def print_student_lists
   current_pos = 0
-  namesLength = names.length
-  return nil if(namesLength == 0) #Prevent looping through students array if there are no students
-  while(current_pos < namesLength) #loop while current pos less length of names array
-    if((names[current_pos][:name].length) < 12 && (names[current_pos][:name][0].downcase == "a")) #output if :name is less than 12 characters and begins with specific character
+  studentLength = @students.length
+  return nil if(studentLength == 0) #Prevent looping through students array if there are no students
+  while(current_pos < studentLength) #loop while current pos less length of student array
+    if((@students[current_pos][:name].length) < 12 && (@students[current_pos][:name][0].downcase == "a")) #output if :name is less than 12 characters and begins with specific character
       puts("#{current_pos+1}. "+
-           "#{names[current_pos][:name]} "+
-           "(#{names[current_pos][:cohort]} cohort) "+
-           "Hobbies: #{names[current_pos][:hobbies]} "+
-           "Country of birth: #{names[current_pos][:country_of_birth]} "+
-           "Height: #{names[current_pos][:height]} cm "
+           "#{@students[current_pos][:name]} "+
+           "(#{@students[current_pos][:cohort]} cohort) "+
+           "Hobbies: #{@students[current_pos][:hobbies]} "+
+           "Country of birth: #{@students[current_pos][:country_of_birth]} "+
+           "Height: #{@students[current_pos][:height]} cm "
            )
     end
     current_pos += 1
   end
 end
 
-def print_footer(names) # Takes array of students and return number students using count method in a message
-  puts("\nOverall, we have #{names.count} great students\n\n")
+def print_footer # Takes array of students and return number students using count method in a message
+  puts("\nOverall, we have #{@students.count} great students\n\n")
 end
 
 def print_menu
@@ -69,8 +67,14 @@ def print_menu
   end
 end
 
+def show_students
+  print_header
+  print_student_lists
+  print_footer
+end
+
 def interactive_menu
-  students = [] #Define students array so menu option 2 can be called before menu option 1
+  @students = [] #Define students array so menu option 2 can be called before menu option 1
   loop do
     print_menu #1 print the menu
 
@@ -82,15 +86,13 @@ def interactive_menu
     case selection
     when "1"
       puts("")
-      students = input_students
-      msg = "#{students.count} student"
-      msg << "s" if students.count > 1
+      input_students
+      msg = "#{@students.count} student"
+      msg << "s" if @students.count > 1
       msg << " added"
       puts(msg)
     when "2"
-      print_header
-      print_student_lists(students)
-      print_footer(students)
+      show_students
     when "9"
       break
     else
