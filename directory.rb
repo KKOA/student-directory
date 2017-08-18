@@ -35,7 +35,7 @@ def input_students #method allows the user dynamically input students
 end
 
 def print_header #output the header
-  puts ""
+  puts("")
   puts("The students of Villians Academy".center(70))
   puts(("-"*68).center(70))
 end
@@ -62,9 +62,42 @@ def print_footer(names) # Takes array of students and return number students usi
   puts("\nOverall, we have #{names.count} great students\n\n")
 end
 
-#call methods
-print_header()
-#Added array to hold students
-students = input_students
-print(students)
-print_footer(students)
+def interactive_menu
+  students = [] #Define students array so menu option 2 can be called before menu option 1
+  loop do
+    #1 print the menu
+    puts("")
+    puts("Menu".center(70))
+    puts(("-"*68).center(70))
+    menu =['Input the students','Show students','','','','','','','Exit']
+    menu.each_with_index do | menu_item, key |
+      next if menu_item == '' # Do not display empty menu items
+      puts("#{key+1}. #{menu_item}")
+    end
+
+    #2 read the input and save it into variable
+    puts("","Please select an option ")
+    selection = gets.strip
+
+    #3 perform action
+    case selection
+    when "1"
+      students = input_students
+      msg = "#{students.count} student added"
+      msg << "s" if students.count < 2
+      puts(msg)
+    when "2"
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      break
+    else
+      puts("'#{selection}' is an invaid option. Please try again")
+    end
+  end
+  puts("","Exiting Program","")
+end
+
+#start program
+interactive_menu
