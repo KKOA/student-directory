@@ -11,7 +11,7 @@ def input_students #method allows the user dynamically input students
     cohort = gets.strip.downcase
     until all_cohorts.include?(cohort)
       if(cohort.length == 0)
-        cohort = Time.now.strftime("%B").downcase
+        cohort = Time.now.strftime("%B").downcase # get the current month
         break
       end
       puts("#{cohort} is an invalid cohort month name")
@@ -20,7 +20,7 @@ def input_students #method allows the user dynamically input students
     end
     puts("Please enter your hobbies")
     hobbies =gets.strip
-    puts("Please enter Country of Birth")
+    puts("Please enter country of birth")
     country_of_birth = gets.strip
     puts("Please enter your height in cm")
     height =gets.strip.to_i
@@ -35,12 +35,10 @@ def input_students #method allows the user dynamically input students
 end
 
 def print_header #output the header
-  puts("")
-  puts("The students of Villians Academy".center(70))
-  puts(("-"*68).center(70))
+  puts("", "The students of Villians Academy".center(70),("-"*68).center(70))
 end
 
-def print(names) #This method overwrite existing print method
+def print_student_lists(names) #This method overwrite existing print method
   current_pos = 0
   namesLength = names.length
   return nil if(namesLength == 0) #Prevent looping through students array if there are no students
@@ -63,9 +61,7 @@ def print_footer(names) # Takes array of students and return number students usi
 end
 
 def print_menu
-  puts("")
-  puts("Menu".center(70))
-  puts(("-"*68).center(70))
+  puts("","Menu".center(70),("-"*68).center(70))
   menu =['Input the students','Show students','','','','','','','Exit']
   menu.each_with_index do | menu_item, key |
     next if menu_item == '' # Do not display empty menu items
@@ -93,7 +89,7 @@ def interactive_menu
       puts(msg)
     when "2"
       print_header
-      print(students)
+      print_student_lists(students)
       print_footer(students)
     when "9"
       break
