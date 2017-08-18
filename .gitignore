@@ -1,0 +1,8 @@
+# Mac
+.DS_STORE
+
+# windows
+Thumbs.db
+
+#CSV files
+*.csv
