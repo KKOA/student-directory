@@ -1,17 +1,30 @@
 #Define methods
 def input_students #method allows the user dynamically input students
   students = [] #empty array
+  all_cohorts =['januay','february','march','april','may','june','july','august','september','october','nov','december']
   puts("Please enter a student name. Hit enter twice to exit")
   name = gets.strip #Get user input and remove leading and trailing whitespaces
   name = name.split(" ").map{|x| x.capitalize}.join(" ") # capitalize first letter of each word e.g. aaron smith => Aaron Smith
   until name.empty? do #repeat code while name is not empty
+    puts("Please enter the cohort month name (i.e august)")
+    puts("that the student belong to or leave blank for current month")
+    cohort = gets.strip.downcase
+    until all_cohorts.include?(cohort)
+      if(cohort.length == 0)
+        cohort = Time.now.strftime("%B").downcase
+        break
+      end
+      puts("#{cohort} is an invalid cohort month name")
+      puts("Please enter the cohort month name that the student belong to")
+      cohort = gets.strip.downcase
+    end
     puts("Please enter your hobbies")
     hobbies =gets.strip
     puts("Please enter Country of Birth")
     country_of_birth = gets.strip
     puts("Please enter your height in cm")
     height =gets.strip.to_i
-    students << {:name => name, :cohort => :november, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
+    students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
     msg = "Now we have #{students.count} student"
     msg << "s" if students.count > 1
     puts(msg,"")
