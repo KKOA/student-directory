@@ -60,7 +60,7 @@ end
 
 def print_menu
   puts("","Menu".center(70),("-"*68).center(70))
-  menu =['Input the students','Show students','Save list to file','','','','','','Exit']
+  menu =['Input the students','Show students','Save list to file','Load list from file','','','','','Exit']
   menu.each_with_index do | menu_item, key |
     next if menu_item == '' # Do not display empty menu items
     puts("#{key+1}. #{menu_item}")
@@ -89,6 +89,18 @@ def save_students #save data to file
   puts "Data saved to #{filename}"
 end
 
+def load_students
+  filename = "student.csv"
+  file = File.open(filename,"r") #open file in read mode
+  file.readlines.each do |line| #loop file one line at time
+    name,cohort,hobbies,country_of_birth,height = line.chomp.split(',')# parallel assigment
+    @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height}
+  end
+  file.close #close file
+  puts "Closing File"
+  puts "Data read from #{filename}"
+end
+
 def process(selection)
   case selection
   when "1"
@@ -102,6 +114,8 @@ def process(selection)
     show_students
   when "3"
     save_students
+  when "4"
+    load_students
   when "9"
     exit
   else
