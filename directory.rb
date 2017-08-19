@@ -73,6 +73,24 @@ def show_students
   print_footer
 end
 
+def process(selection)
+  case selection
+  when "1"
+    puts("")
+    input_students
+    msg = "#{@students.count} student"
+    msg << "s" if @students.count > 1
+    msg << " added"
+    puts(msg)
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts("'#{selection}' is an invaid option. Please try again")
+  end
+end
+
 def interactive_menu
   @students = [] #Define students array so menu option 2 can be called before menu option 1
   loop do
@@ -82,22 +100,7 @@ def interactive_menu
     puts("","Please select an option ")
     selection = gets.strip
 
-    #3 perform action
-    case selection
-    when "1"
-      puts("")
-      input_students
-      msg = "#{@students.count} student"
-      msg << "s" if @students.count > 1
-      msg << " added"
-      puts(msg)
-    when "2"
-      show_students
-    when "9"
-      break
-    else
-      puts("'#{selection}' is an invaid option. Please try again")
-    end
+    process(selection) #3 perform action
   end
   puts("","Exiting Program","")
 end
