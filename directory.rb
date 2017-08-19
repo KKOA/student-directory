@@ -1,6 +1,6 @@
 #Define methods
 def input_students #method allows the user dynamically input students
-  all_cohorts =['januay','february','march','april','may','june','july','august','september','october','nov','december']
+  all_cohorts =['january','february','march','april','may','june','july','august','september','october','november','december']
   puts("Please enter a student name. Hit enter twice to exit")
   name = gets.strip #Get user input and remove leading and trailing whitespaces
   name = name.split(" ").map{|x| x.capitalize}.join(" ") # capitalize first letter of each word e.g. aaron smith => Aaron Smith
@@ -60,7 +60,7 @@ end
 
 def print_menu
   puts("","Menu".center(70),("-"*68).center(70))
-  menu =['Input the students','Show students','','','','','','','Exit']
+  menu =['Input the students','Show students','Save list to file','','','','','','Exit']
   menu.each_with_index do | menu_item, key |
     next if menu_item == '' # Do not display empty menu items
     puts("#{key+1}. #{menu_item}")
@@ -71,6 +71,22 @@ def show_students
   print_header
   print_student_lists
   print_footer
+end
+
+def save_students #save data to file
+  filename = 'student.csv'
+  file = File.open(filename,"w") # open file in write mode incidate by w
+  # warning w overwrite an existing file if file & directory has write permission for current user& it also create the file already exist
+  @students.each do|student|
+    student_data = [student[:name], student[:cohort], student[:hobbies], student[:country_of_birth], student[:height]]
+    csv_line = student_data.join(",") # merge as array
+    file.puts(csv_line) # write to file
+    #Ruby method puts that can be used in various situations. You must explicity call if want to write to file
+    #By default Ruby  assumes that we want to write to standard output, if use puts without any reference
+  end
+  file.close #close file. Only writes to file once closed it
+  STDOUT.puts "Closing File" # STDOUT.puts an puts are same
+  puts "Data saved to #{filename}"
 end
 
 def process(selection)
@@ -84,6 +100,8 @@ def process(selection)
     puts(msg)
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
     exit
   else
