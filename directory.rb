@@ -107,3 +107,11 @@ end
 
 #start program
 interactive_menu
+
+=begin
+Future imporvements
+Edit student's detail
+Delete student's detail
+Enable user control the filter on number records they can see
+Add question method which takes question as an argument and return the answer
+=end
