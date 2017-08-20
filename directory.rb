@@ -1,13 +1,15 @@
+@students = [] #Define students array so menu option 2 can be called before menu option 1
+
 #Define methods
 def input_students #method allows the user dynamically input students
   all_cohorts =['january','february','march','april','may','june','july','august','september','october','november','december']
   puts("Please enter a student name. Hit enter twice to exit")
-  name = gets.strip #Get user input and remove leading and trailing whitespaces
+  name = STDIN.gets.strip #Get user input and remove leading and trailing whitespaces
   name = name.split(" ").map{|x| x.capitalize}.join(" ") # capitalize first letter of each word e.g. aaron smith => Aaron Smith
   until name.empty? do #repeat code while name is not empty
     puts("Please enter the cohort month name (i.e august)")
     puts("that the student belong to or leave blank for current month")
-    cohort = gets.strip.downcase
+    cohort = STDIN.gets.strip.downcase
     until all_cohorts.include?(cohort)
       if(cohort.length == 0)
         cohort = Time.now.strftime("%B").downcase # get the current month
@@ -15,20 +17,20 @@ def input_students #method allows the user dynamically input students
       end
       puts("#{cohort} is an invalid cohort month name")
       puts("Please enter the cohort month name that the student belong to")
-      cohort = gets.strip.downcase
+      cohort = STDIN.gets.strip.downcase
     end
     puts("Please enter your hobbies")
-    hobbies =gets.strip
+    hobbies = STDIN.gets.strip
     puts("Please enter country of birth")
-    country_of_birth = gets.strip
+    country_of_birth = STDIN.gets.strip
     puts("Please enter your height in cm")
-    height =gets.strip.to_i
+    height = STDIN.gets.strip.to_i
     @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height} #add ended of array
     msg = "Now we have #{@students.count} student"
     msg << "s" if(@students.count > 1)
     puts(msg,"")
     puts("Please enter another student name. Hit enter twice to exit")
-    name = gets.strip #ask user for another, also need to prevent infinite loop
+    name = STDIN.gets.strip #ask user for another, also need to prevent infinite loop
   end
 end
 
@@ -89,16 +91,15 @@ def save_students #save data to file
   puts "Data saved to #{filename}"
 end
 
-def load_students
-  filename = "student.csv"
+def load_students(filename="student.csv")
   file = File.open(filename,"r") #open file in read mode
   file.readlines.each do |line| #loop file one line at time
     name,cohort,hobbies,country_of_birth,height = line.chomp.split(',')# parallel assigment
     @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height}
   end
   file.close #close file
-  puts "Closing File"
-  puts "Data read from #{filename}"
+  puts("Closing File")
+  puts("Loaded #{@students.count} from #{filename}")
 end
 
 def process(selection)
@@ -124,22 +125,35 @@ def process(selection)
 end
 
 def interactive_menu
-  @students = [] #Define students array so menu option 2 can be called before menu option 1
   loop do
     print_menu #1 print the menu
 
     #2 read the input and save it into variable
     puts("","Please select an option ")
-    selection = gets.strip
+    selection =   STDIN.gets.strip
+    #gets method reads from the list of files supplied as arguments, only defaulting to the keyboard (or, standard input stream, to be precise) if there are no files.
+    #Because passing argument to file on startup, we need prepend gets with reference of STDIN for all place where we expecting user input from keyboard
 
     process(selection) #3 perform action
   end
   puts("","Exiting Program","")
 end
 
-#start program
-interactive_menu
+def try_load
+  filename = ARGV.first #Get first value from ARGV array
+  #This is a special array that contains all arguments passed to program on startup
+  #E.g. ruby directory.rb foo - foo is stored in ARGV array
+  return if(filename.nil?) #no point continuing function if filename is nil
+  if(File.exists?(filename))#check file exist
+    load_students(filename)
+  else #file does not exist
+    puts("Sorry #{filename} does not exist.")
+  end
+end
 
+#start program
+try_load
+interactive_menu
 =begin
 Future imporvements
 Edit student's detail
