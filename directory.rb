@@ -30,7 +30,7 @@ def input_students #method allows the user dynamically input students
     msg = "Now we have #{@students.count} student"
     msg << "s" if(@students.count > 1)
     STDOUT.puts(msg,"")
-    name = question_answer("Please enter another student name. Hit enter twice to exit")
+    name = question_answer("Please enter another student name. Hit enter twice to exit.")
     #ask user for another, also need to prevent infinite loop
   end
 end
@@ -39,7 +39,7 @@ def print_header #output the header
   STDOUT.puts("", "The students of Villians Academy".center(70),("-"*68).center(70))
 end
 
-def print_student_lists
+def print_student_lists #print list of students
   current_pos = 0
   studentLength = @students.length
   return nil if(studentLength == 0) #Prevent looping through students array if there are no students
@@ -58,7 +58,54 @@ def print_student_lists
 end
 
 def print_footer # Takes array of students and return number students using count method in a message
-  STDOUT.puts("\nOverall, we have #{@students.count} great students\n\n")
+  STDOUT.puts("\nOverall, we have #{@students.count} great students.\n\n")
+end
+
+
+def show_students  #print student list with header and footer
+  print_header
+  print_student_lists
+  print_footer
+end
+
+def save_students(filename) #save data to file
+  msg = "Enter yes to confirm that you wish to overwrite the file context for '#{filename}'. \nThe old data will unrecoverable"
+  return STDOUT.puts "Aborting 'Save list to file'." if question_answer(msg).downcase != 'yes'
+  File.open(filename, "w") do |file| # open file in write mode incidate by w
+  # warning w overwrite an existing file if file & directory has write permission for current user& it also create the file already exist
+    @students.each do|student|
+      student_data = [student[:name], student[:cohort], student[:hobbies], student[:country_of_birth], student[:height]]
+      csv_line = student_data.join(",") #merge array as string
+      file.puts(csv_line) # write to file
+      #Ruby method puts that can be used in various situations. You must explicity call if want to write to file
+      #By default Ruby  assumes that we want to write to standard output, if use puts without any reference
+    end
+  end # Ruby automatically close file
+  STDOUT.puts("","Data saved to '#{filename}'.") # STDOUT.puts an puts are same
+end
+
+def load_students(filename="student.csv") # load student list from file
+  File.open(filename, "r") do |file| #open file in read mode
+    file.readlines.each do |line| #loop file one line at time
+      name,cohort,hobbies,country_of_birth,height = line.chomp.split(',')# parallel assigment
+      @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height}
+    end
+  end # Ruby automatically close file
+  STDOUT.puts("","Loaded #{@students.count} from '#{filename}'.")
+end
+
+
+
+def try_load
+  filename = ARGV.first #Get first value from ARGV array
+  #This is a special array that contains all arguments passed to program on startup
+  #E.g. ruby directory.rb foo - foo is stored in ARGV array
+  return load_students if(filename.nil?) #no point continuing function if filename is nil
+  if(File.exists?(filename))#check file exist
+    load_students(filename)
+  else #file does not exist
+    STDOUT.puts("Sorry '#{filename}' does not exist.")
+  end
 end
 
 def print_menu
@@ -70,75 +117,37 @@ def print_menu
   end
 end
 
-def show_students
-  print_header
-  print_student_lists
-  print_footer
-end
-
-def save_students(filename) #save data to file
-  File.open(filename, "w") do |file| # open file in write mode incidate by w
-  # warning w overwrite an existing file if file & directory has write permission for current user& it also create the file already exist
-    @students.each do|student|
-      student_data = [student[:name], student[:cohort], student[:hobbies], student[:country_of_birth], student[:height]]
-      csv_line = student_data.join(",") #merge array as string
-      file.puts(csv_line) # write to file
-      #Ruby method puts that can be used in various situations. You must explicity call if want to write to file
-      #By default Ruby  assumes that we want to write to standard output, if use puts without any reference
-    end
-  end # Ruby automatically close file
-  STDOUT.puts("","Data saved to '#{filename}'") # STDOUT.puts an puts are same
-end
-
-def load_students(filename="student.csv")
-  File.open(filename, "r") do |file| #open file in read mode
-    file.readlines.each do |line| #loop file one line at time
-      name,cohort,hobbies,country_of_birth,height = line.chomp.split(',')# parallel assigment
-      @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height}
-    end
-  end # Ruby automatically close file
-  STDOUT.puts("","Loaded #{@students.count} from '#{filename}'")
-end
-
 def process(selection)
   case selection
   when "1"
     STDOUT.puts("")
+    current_list_size = @students.count #current list size
     input_students
-    msg = "#{@students.count} student"
-    msg << "s" if @students.count > 1
-    msg << " added"
-    STDOUT.puts(msg)
+    difference = @students.count - current_list_size
+    if(difference > 0) # Only output message if list size has changed
+      msg = "#{difference} student"
+      msg << "s" if difference > 1
+      msg << " added."
+      STDOUT.puts(msg)
+    end
   when "2"
     show_students
   when "3"
     save_students(question_answer("Where want save the data to?"))
   when "4"
-    load_students(question_answer("Where want load the data from? By default this set 'students.csv'"))
+    load_students(question_answer("Where want load the data from? By default this set 'students.csv'."))
   when "9"
-    STDOUT.puts("","Exiting Program","")
+    STDOUT.puts("","Exiting Program.","")
     exit
   else
-    STDOUT.puts("'#{selection}' is an invaid option. Please try again")
+    STDOUT.puts("'#{selection}' is an invaid option. Please try again.")
   end
 end
 
 def interactive_menu
   loop do
     print_menu #1. print the menu
-    process(question_answer("Please select an option ")) #2. read the input and #3. perform action
-  end
-end
-
-def try_load
-  filename = ARGV.first #Get first value from ARGV array
-  #This is a special array that contains all arguments passed to program on startup
-  #E.g. ruby directory.rb foo - foo is stored in ARGV array
-  return load_students if(filename.nil?) #no point continuing function if filename is nil
-  if(File.exists?(filename))#check file exist
-    load_students(filename)
-  else #file does not exist
-    STDOUT.puts("Sorry '#{filename}' does not exist.")
+    process(question_answer("Please select an option.")) #2. read the input and #3. perform action
   end
 end
 
