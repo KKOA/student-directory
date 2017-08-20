@@ -76,8 +76,7 @@ def show_students
   print_footer
 end
 
-def save_students #save data to file
-  filename = 'student.csv'
+def save_students(filename) #save data to file
   file = File.open(filename,"w") # open file in write mode incidate by w
   # warning w overwrite an existing file if file & directory has write permission for current user& it also create the file already exist
   @students.each do|student|
@@ -115,9 +114,9 @@ def process(selection)
   when "2"
     show_students
   when "3"
-    save_students
+    save_students(question_answer("Where want save the data to?"))
   when "4"
-    load_students
+    load_students(question_answer("Where want load the data from? By default this set 'students.csv'"))
   when "9"
     STDOUT.puts("","Exiting Program","")
     exit
