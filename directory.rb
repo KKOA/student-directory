@@ -137,7 +137,7 @@ def try_load
   filename = ARGV.first #Get first value from ARGV array
   #This is a special array that contains all arguments passed to program on startup
   #E.g. ruby directory.rb foo - foo is stored in ARGV array
-  return if(filename.nil?) #no point continuing function if filename is nil
+  return load_students if(filename.nil?) #no point continuing function if filename is nil
   if(File.exists?(filename))#check file exist
     load_students(filename)
   else #file does not exist
