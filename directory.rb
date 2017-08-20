@@ -77,29 +77,27 @@ def show_students
 end
 
 def save_students(filename) #save data to file
-  file = File.open(filename,"w") # open file in write mode incidate by w
+  File.open(filename, "w") do |file| # open file in write mode incidate by w
   # warning w overwrite an existing file if file & directory has write permission for current user& it also create the file already exist
-  @students.each do|student|
-    student_data = [student[:name], student[:cohort], student[:hobbies], student[:country_of_birth], student[:height]]
-    csv_line = student_data.join(",") # merge as array
-    file.puts(csv_line) # write to file
-    #Ruby method puts that can be used in various situations. You must explicity call if want to write to file
-    #By default Ruby  assumes that we want to write to standard output, if use puts without any reference
-  end
-  file.close #close file. Only writes to file once closed it
-  STDOUT.puts "Closing File" # STDOUT.puts an puts are same
-  STDOUT.puts "Data saved to #{filename}"
+    @students.each do|student|
+      student_data = [student[:name], student[:cohort], student[:hobbies], student[:country_of_birth], student[:height]]
+      csv_line = student_data.join(",") #merge array as string
+      file.puts(csv_line) # write to file
+      #Ruby method puts that can be used in various situations. You must explicity call if want to write to file
+      #By default Ruby  assumes that we want to write to standard output, if use puts without any reference
+    end
+  end # Ruby automatically close file
+  STDOUT.puts("","Data saved to '#{filename}'") # STDOUT.puts an puts are same
 end
 
 def load_students(filename="student.csv")
-  file = File.open(filename,"r") #open file in read mode
-  file.readlines.each do |line| #loop file one line at time
-    name,cohort,hobbies,country_of_birth,height = line.chomp.split(',')# parallel assigment
-    @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height}
-  end
-  file.close #close file
-  STDOUT.puts("Closing File")
-  STDOUT.puts("Loaded #{@students.count} from #{filename}")
+  File.open(filename, "r") do |file| #open file in read mode
+    file.readlines.each do |line| #loop file one line at time
+      name,cohort,hobbies,country_of_birth,height = line.chomp.split(',')# parallel assigment
+      @students << {:name => name, :cohort => cohort.to_sym, :hobbies => hobbies ,:country_of_birth => country_of_birth, :height => height}
+    end
+  end # Ruby automatically close file
+  STDOUT.puts("","Loaded #{@students.count} from '#{filename}'")
 end
 
 def process(selection)
@@ -140,7 +138,7 @@ def try_load
   if(File.exists?(filename))#check file exist
     load_students(filename)
   else #file does not exist
-    STDOUT.puts("Sorry #{filename} does not exist.")
+    STDOUT.puts("Sorry '#{filename}' does not exist.")
   end
 end
 
